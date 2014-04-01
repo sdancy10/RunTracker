@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
@@ -21,7 +23,7 @@ public class runInterpreter implements IrunInterpreter {
 	/**
 	 * @param String that contains the name of the run log file
 	 */
-	runInterpreter(String fileName) { this.fileName = fileName; }
+	public runInterpreter(String fileName) { this.fileName = fileName; }
 	
 	@Override
 	public List<Run> getRuns() {

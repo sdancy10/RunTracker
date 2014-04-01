@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class Runs {
 	 * Fills Runs data structure with information of the runs.
 	 * @param List of <Run> with the running data.
 	 */
-	Runs (List<Run> runs) { this.runs = runs ;}
+	public Runs (List<Run> runs) { this.runs = runs ;}
 	
 	/**
 	 * 
@@ -56,16 +58,14 @@ public class Runs {
 			int min = Integer.parseInt(lineTokens[1]);
 			int seconds = Integer.parseInt(lineTokens[2]);
 			
-			if (hour <= shortHour) { 
-				if (min <= shortMin) {
-					if ( seconds < shortSec) {
-						fastRun = run;
-						shortHour = hour;
-						shortMin = min;
-						shortSec = seconds;
-					}
-				}
+			if (hour <= shortHour && min <= shortMin && seconds <= shortSec) {
+				fastRun = run;
+				shortHour = hour;
+				shortMin = min;
+				shortSec = seconds;
 			}
+			
+				
 		}
 		return fastRun;
 	}
@@ -93,7 +93,7 @@ public class Runs {
 			totalDistance += run.getDistance();
 		}
 		
-		return (totalDistance*100)/100.0000;
+		return (totalDistance*100)/100.00;
 	}
 	
 	public String getTotalTime() {
