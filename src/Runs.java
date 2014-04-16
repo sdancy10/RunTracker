@@ -1,13 +1,29 @@
 
 
+
+
 import java.util.ArrayList;
 import java.util.List;
+import com.androidplot.LineRegion;
+import com.androidplot.Plot;
+import com.androidplot.ui.AnchorPosition;
+import com.androidplot.ui.SeriesRenderer;
+import com.androidplot.ui.SizeLayoutType;
+import com.androidplot.ui.SizeMetrics;
+import com.androidplot.ui.TextOrientationType;
+import com.androidplot.ui.widget.TextLabelWidget;
+import com.androidplot.util.PixelUtils;
+import com.androidplot.xy.*;
+import com.androidplot.ui.XLayoutStyle;
+import com.androidplot.ui.YLayoutStyle;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * @author Style
  *
  */
-public class Runs {
+public class Runs implements Parcelable {
 	private List<Run> runs;
 	
 	/**
@@ -22,10 +38,26 @@ public class Runs {
 	public Runs (List<Run> runs) { this.runs = runs ;}
 	
 	/**
+	 * Parcelable Constructor
+	 */
+	public Runs(Parcel in) {
+        in.readTypedList(runs, Run.CREATOR);
+    }
+	/**
 	 * 
 	 * @return Returns the list of runs with their details.
 	 */
 	public List<Run> getRuns() { return this.runs; }
+	
+	/**
+	 * @return Gives graphical display of Distance vs Time details of runs
+	 */
+	/**
+	 * @return Gives graphical display of Date vs Time details of runs
+	 */
+	/**
+	 * @return Gives graphical display of Distance vs Date details of runs
+	 */
 	
 	/**
 	 * Search's the iterable list of all runs for desired date (MM/DD/YY) and returns the details of the run on provided date.
@@ -58,13 +90,24 @@ public class Runs {
 			int min = Integer.parseInt(lineTokens[1]);
 			int seconds = Integer.parseInt(lineTokens[2]);
 			
-			if (hour <= shortHour && min <= shortMin && seconds <= shortSec) {
+			if (hour <= shortHour) {
 				fastRun = run;
 				shortHour = hour;
 				shortMin = min;
 				shortSec = seconds;
 			}
-			
+			if (min <= shortMin) {
+				fastRun = run;
+				shortHour = hour;
+				shortMin = min;
+				shortSec = seconds;
+			}
+			if ( seconds <= shortSec) {
+						fastRun = run;
+						shortHour = hour;
+						shortMin = min;
+						shortSec = seconds;
+			}
 				
 		}
 		return fastRun;
@@ -93,7 +136,7 @@ public class Runs {
 			totalDistance += run.getDistance();
 		}
 		
-		return (totalDistance*100)/100.00;
+		return (totalDistance*100)/100.0000;
 	}
 	
 	public String getTotalTime() {
@@ -116,4 +159,29 @@ public class Runs {
 	public int getRunCount() {
 		return runs.size();
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int arg1) {
+		parcel.writeTypedList(runs);
+		
+	}
+	public static final Parcelable.Creator<Runs> CREATOR =
+            new Parcelable.Creator<Runs>() {
+
+        @Override
+        public Runs createFromParcel(Parcel in) {
+            return new Runs(in);
+        }
+
+        @Override
+        public Runs[] newArray(int size) {
+            return new Runs[size];
+        }
+    };
 }

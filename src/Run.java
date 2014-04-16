@@ -1,5 +1,10 @@
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+
+
 /**
  * 
  */
@@ -10,7 +15,7 @@
  * @author Style
  *
  */
-public class Run {
+public class Run implements Parcelable {
 	/**
 	 * Field representing the name of the run
 	 */
@@ -43,6 +48,16 @@ public class Run {
 		this.time = "--:--:--";
 		this.date = "MM/DD/YY";
 		this.distance = 0.00;
+	}
+	
+	/**Constructor for Parcelable class
+	 * @param parcel
+	 */
+	Run (Parcel read) {
+		this.title = read.readString();
+		this.date = read.readString();
+		this.time = read.readString();
+		this.distance = read.readDouble();
 	}
 	
 	/**
@@ -127,5 +142,34 @@ public class Run {
 				"\nRun Distance: " + this.distance;
 		return result;
 	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(this.title);
+		dest.writeString(this.date);
+		dest.writeString(this.time);
+		dest.writeDouble(this.distance);
+		
+	}
+	
+	  public static final Parcelable.Creator<Run> CREATOR = 
+		        new Parcelable.Creator<Run>() {
+
+		            @Override
+		            public Run createFromParcel(Parcel source) {
+		                return new Run(source);
+		            }
+
+		            @Override
+		            public Run[] newArray(int size) {
+		                return new Run[size];
+		            }
+		        };
 
 }
